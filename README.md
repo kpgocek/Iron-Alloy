@@ -1,4 +1,4 @@
-<p align="center"><a href="https://obsidian.md" target="_blank" rel="noopener noreferrer"><img width="100" src="https://www.applivery.com/wp-content/uploads/2025/10/obsidian-app.png" alt="Obsidian.md logo"></a></p>
+<p align="center"><img width="120" src="./images/logo_dark_borderless.png" alt="Iron Alloy logo"></p>
 <h1 align="center">Obsidian Theme: Iron Alloy</h1>
 <div align="center">
   <div align="center">
@@ -13,12 +13,11 @@
 <br />
 
 <div align="center">
-  <img src="./images/demo1.png"><br />
+  <img src=""><br />
 </div>
 
 <hr>
 
 <div align="center">
-  <b>Iron 🪨 Alloy</b>
-  <p>2 0 2 6</p>
+  <b>Iron Alloy &copy; 2026</b>
 </div>
