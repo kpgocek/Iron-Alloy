@@ -10,8 +10,8 @@
   <div align="center">
     <img src="https://img.shields.io/github/v/release/kpgocek/Iron-Alloy">
     <img src="https://img.shields.io/github/license/kpgocek/Iron-Alloy">
-    <img src="https://img.shields.io/github/last-commit/kpgocek/Iron-Alloy">
     <br />
+    <img src="https://img.shields.io/github/last-commit/kpgocek/Iron-Alloy">
     <img src="https://github.com/kpgocek/Iron-Alloy/actions/workflows/validate.yml/badge.svg?branch=main">
   </div>
 
