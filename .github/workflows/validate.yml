@@ -1,0 +1,157 @@
+name: Validate Obsidian Theme
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm install -g semver
+          npm install -g stylelint stylelint-config-standard
+
+      ############################################
+      # FILE REQUIREMENTS
+      ############################################
+
+      - name: Check required root files
+        run: |
+          test -f theme.css || (echo "theme.css missing" && exit 1)
+          test -f manifest.json || (echo "manifest.json missing" && exit 1)
+          test -f LICENSE || (echo "LICENSE missing" && exit 1)
+          test -f README.md || (echo "README.md missing" && exit 1)
+
+      ############################################
+      # MANIFEST VALIDATION
+      ############################################
+
+      - name: Validate manifest.json syntax
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
+
+      - name: Validate manifest required fields
+        run: |
+          node <<EOF
+          const fs = require('fs');
+          const semver = require('semver');
+
+          const manifest = JSON.parse(fs.readFileSync('manifest.json','utf8'));
+          const required = ['name','version','minAppVersion','description','author'];
+
+          for (const field of required) {
+            if (!manifest[field]) {
+              console.error(\`Missing required field: \${field}\`);
+              process.exit(1);
+            }
+          }
+
+          if (!semver.valid(manifest.version)) {
+            console.error("Version must follow semantic versioning (x.y.z)");
+            process.exit(1);
+          }
+
+          if (!semver.valid(manifest.minAppVersion)) {
+            console.error("minAppVersion must follow semantic versioning");
+            process.exit(1);
+          }
+
+          console.log("Manifest validation passed");
+          EOF
+
+      ############################################
+      # VERSION CONSISTENCY
+      ############################################
+
+      - name: Validate release tag matches manifest version
+        if: github.event_name == 'release'
+        run: |
+          VERSION=$(node -p "require('./manifest.json').version")
+          TAG=${GITHUB_REF#refs/tags/}
+
+          if [ "$TAG" != "$VERSION" ]; then
+            echo "Tag ($TAG) does not match manifest version ($VERSION)"
+            exit 1
+          fi
+
+      ############################################
+      # CSS QUALITY CHECKS
+      ############################################
+
+      - name: Lint CSS syntax
+        run: |
+          echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
+          stylelint theme.css
+
+      - name: Check for forbidden patterns
+        run: |
+          if grep -iE "@import.*http" theme.css; then
+            echo "Remote @import detected"
+            exit 1
+          fi
+
+          if grep -iE "analytics|telemetry|tracking|google-analytics" theme.css; then
+            echo "Tracking code detected"
+            exit 1
+          fi
+
+          if grep -iE "eval\(|base64," theme.css; then
+            echo "Potential obfuscated code detected"
+            exit 1
+          fi
+
+      - name: Ensure CSS is not minified
+        run: |
+          LINE_COUNT=$(wc -l < theme.css)
+          if [ "$LINE_COUNT" -lt 50 ]; then
+            echo "CSS appears minified or too small"
+            exit 1
+          fi
+
+      ############################################
+      # README CHECKS
+      ############################################
+
+      - name: Validate README structure
+        run: |
+          if ! grep -iq "install" README.md; then
+            echo "README missing installation instructions"
+            exit 1
+          fi
+
+          if ! grep -iq "screenshot" README.md; then
+            echo "README missing screenshots reference"
+            exit 1
+          fi
+
+          if ! grep -iq "description" README.md; then
+            echo "README missing clear description"
+            exit 1
+          fi
+
+      ############################################
+      # LICENSE CHECK
+      ############################################
+
+      - name: Validate LICENSE content
+        run: |
+          if ! grep -iqE "MIT|GPL|Apache|BSD" LICENSE; then
+            echo "License type not clearly specified"
+            exit 1
+          fi
+
+          echo "All checks passed successfully"
