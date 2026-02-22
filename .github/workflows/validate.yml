@@ -1,4 +1,4 @@
-name: Validate Obsidian Theme
+name: validation
 
 on:
   push:
