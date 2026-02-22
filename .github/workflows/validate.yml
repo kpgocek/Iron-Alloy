@@ -22,8 +22,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm install -g semver
-          npm install -g stylelint stylelint-config-standard
+          npm install semver
+          npm install stylelint stylelint-config-standard
 
       ############################################
       # FILE REQUIREMENTS
