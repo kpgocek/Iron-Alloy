@@ -11,7 +11,8 @@
   },
   "scripts": {
     "lint:css": "stylelint theme.css",
-    
+    "lint:css:fix": "stylelint --fix theme.css",
+
     "validate:manifest:syntax": "node -e \"JSON.parse(require('fs').readFileSync('manifest.json','utf8'))\"",
     "validate:manifest": "node validators/validate-manifest.js"
   }
