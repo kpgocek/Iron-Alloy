@@ -25,12 +25,43 @@
 <br />
 
 <div align="center">
-  <img src="/" width="512" height="288">
+  <img src="/screenshot-01.png" width="512" height="288">
+  <img src="/screenshot-02.png" width="512" height="288">
 </div>
 
 <h2>Installation</h2>
 
-<br />
+<h3>Via Community Themes</h3>
+
+1. Open `Settings → Appearance`
+2. Turn off `Safe mode` (enables community themes)
+3. Click `Browse` under “Themes”
+4. Search and install
+5. Click `Use`
+
+<h3>Manual</h3>
+
+1. Locate vault folder:
+```
+<Vault>/.obsidian/themes/ 
+```
+
+2. Create a folder for your theme:
+```
+.obsidian/themes/ThemeName/
+```
+
+3. Place files inside:
+```
+ThemeName/
+├── manifest.json
+└── theme.css
+```
+
+4. Restart Obsidian (or reload themes)
+```
+Settings → Appearance → Themes
+```
 
 <h2>Core Principles</h2>
 <p>Iron Alloy is a legibility-first Obsidian theme designed for focused writing and long-form knowledge work. It emphasizes structural clarity, accessibility, and self-contained reliability over decorative styling.</p>
