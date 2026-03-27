@@ -77,6 +77,7 @@ jobs:
       - name: Check for forbidden patterns
         run: |
           set -euo pipefail
+
           check() {
             local pattern="$1"
             local message="$2"
@@ -86,9 +87,21 @@ jobs:
               exit 1
             fi
           }
+
+          # Block remote imports
           check "@import.*http" "Remote @import detected"
+
+          # Block tracking-related keywords
           check "analytics|telemetry|tracking|google-analytics" "Tracking code detected"
-          check "eval\(|base64," "Potential obfuscated code detected"
+
+          # Block eval (always suspicious in CSS context)
+          check "eval\(" "Potential JS eval detected"
+
+          # Handle base64 more carefully
+          if grep -iE "base64," theme.css | grep -viE "data:font/(woff2?|ttf|otf)"; then
+            echo "Suspicious base64 usage detected (non-font)"
+            exit 1
+          fi
 
       - name: Ensure CSS is not minified
         run: |
