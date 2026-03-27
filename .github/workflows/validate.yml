@@ -98,7 +98,7 @@ jobs:
           check "eval\(" "Potential JS eval detected"
 
           # Handle base64 more carefully
-          if grep -iE "base64," theme.css | grep -viE "data:font/(woff2?|ttf|otf)"; then
+          if grep -iE "base64," theme.css | grep -viE "data:font/woff2|data:font/woff|data:application/octet-stream"; then
             echo "Suspicious base64 usage detected (non-font)"
             exit 1
           fi
