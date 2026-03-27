@@ -8,7 +8,7 @@ on:
     types: [published]
 
 jobs:
-  validate:
+  install:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,11 @@ jobs:
           npm install semver
           npm install stylelint stylelint-config-standard
 
+  validate:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
       ############################################
       # FILE REQUIREMENTS
       ############################################
@@ -91,10 +96,6 @@ jobs:
       ############################################
       # CSS QUALITY CHECKS
       ############################################
-
-      - name: Install stylelint
-        run: npm install stylelint stylelint-config-standard
-
       - name: Lint CSS syntax
         run: |
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
