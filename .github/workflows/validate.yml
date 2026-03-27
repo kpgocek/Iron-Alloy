@@ -92,6 +92,9 @@ jobs:
       # CSS QUALITY CHECKS
       ############################################
 
+      - name: Install stylelint
+        run: npm install stylelint stylelint-config-standard
+
       - name: Lint CSS syntax
         run: |
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
