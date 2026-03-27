@@ -1,7 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 const semver = require('semver');
 
-const manifestPath = path.join(__dirname, 'manifest.json');
+const manifestPath = path.resolve(__dirname, '../manifest.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 const required = ['name','version','minAppVersion','description','author'];
 
