@@ -86,16 +86,16 @@
 /* #endregion */
 
 :root {
-	--color-paper: 			hsl(215, 10%, 98%);
-	--color-paper-shadow: 	hsl(215, 40%, 93%);
-
-	--color-void: 			hsl(215, 20%, 8%);
-	--color-void-shadow: 	hsl(215, 50%, 4%);
-
-	--color-alloy-iron: 		hsl(200, 45%, 56%);
-	--color-alloy-iron-shine: 	hsl(200, 60%, 72%);
-	--color-alloy-iron-shadow: 	hsl(200, 50%, 30%);
-	--color-alloy-iron-ghost: 	hsl(200, 30%, 94%);
+	/* 00,05,10,20,25,30,35,40,50,60,70,100 */
+	--color-alloy-white:	hsl(200, 24%, 94%);
+	--color-alloy-bright: 	hsl(200, 27%, 82%);
+	--color-alloy-light: 	hsl(200, 32%, 75%);
+	--color-alloy-shine: 	hsl(200, 44%, 66%);
+	--color-alloy: 			hsl(200, 48%, 42%);
+	--color-alloy-dimm:		hsl(200, 55%, 9%);
+	--color-alloy-shadow:	hsl(200, 69%, 6%);
+	--color-alloy-dark: 	hsl(200, 80%, 3%);
+	--color-alloy-black: 	hsl(200, 90%, 2%);
 }
 
 body {
@@ -147,83 +147,104 @@ body {
 	--tag-radius: var(--radius-m);
 	--tag-border-width: 1px;
 
+
+
 }
 
 .theme-dark {
+	--color-base-00: 	var(--color-alloy-black);
+	--color-base-05: 	var(--color-alloy-black);
+	--color-base-10: 	var(--color-alloy-dark);
+	--color-base-20: 	var(--color-alloy-dark);
+	--color-base-25: 	var(--color-alloy-dimm);
+	--color-base-30: 	var(--color-alloy-dimm);
+	--color-base-35: 	var(--color-alloy);
+	--color-base-40: 	var(--color-alloy-shine);
+	--color-base-50: 	var(--color-alloy-light);
+	--color-base-60: 	var(--color-alloy-bright);
+	--color-base-70: 	var(--color-alloy-bright);
+	--color-base-100: 	var(--color-alloy-white);
+
 	/* LAYOUT */
-	--background-primary: var(--color-void);
-	--background-secondary: var(--color-void-shadow);
+
+	--background-primary: var(--color-alloy-dark);
+	--background-secondary: var(--color-alloy-dark);
 	
-	--sidebar-background: var(--color-void-shadow);
-	--ribbon-background: var(--color-void);
+	--ribbon-background: var(--color-alloy-black);
 
-	--titlebar-background: var(--color-void-shadow);
-	--titlebar-background-focused: var(--color-void);
+	--titlebar-background: var(--color-alloy-dimm);
+	--titlebar-background-focused: var(--color-alloy-black);
 
-	--divider-color: var(--color-metal-black);
+	--divider-color: var(--color-alloy-dimm);
 
 	/* TEXT */
-	--inline-title-color: var(--color-alloy-iron);
-	
-	--metadata-background: var(--color-alloy-iron-shine);
-	--footnote-background: var(--color-alloy-iron-shadow);
 
-	--h1-color: var(--color-alloy-iron);
-	--h2-color: var(--color-alloy-iron-shadow);
-	--h3-color: var(--color-alloy-iron);
-	--h4-color: var(--color-alloy-iron);
-	--h5-color: var(--color-alloy-iron-shine);
-	--h6-color: var(--color-alloy-iron-shine);
+	--inline-title-color: var(--color-alloy-shine);
+	
+	--metadata-background: var(--color-alloy-light);
+	--footnote-background: var(--color-alloy-black);
+	--footnote-border-color: var(--color-alloy-dark);
+
+	--h1-color: var(--color-alloy);
+	--h2-color: var(--color-alloy-shine);
+	--h3-color: var(--color-alloy-light);
+	--h4-color: var(--color-alloy-shine);
+	--h5-color: var(--color-alloy-light);
+	--h6-color: var(--color-alloy-bright);
 
 	/* TAGS */
-	--tag-color: var(--color-alloy-iron);
-	--tag-background: var(--color-void-shadow);
-	--tag-border-color: var(--color-alloy-iron-shadow);
+	--tag-color: var(--color-alloy);
+	--tag-background: var(--color-alloy-shadow);
+	--tag-border-color: var(--color-alloy-dimm);
 
 	/* CONTROLS */
-	--checkbox-color: var(--color-alloy-iron-shadow);
+	/* --checkbox-color: var(--color-alloy-iron-dark);
 	--checkbox-color-hover: var(--color-alloy-iron);
 
 	--checkbox-border-color: var(--color-alloy-iron-shadow);	
-	--checkbox-border-color-hover: var(--color-alloy-iron);
+	--checkbox-border-color-hover: var(--color-alloy-iron); */
 }
 
 .theme-light {
+	--color-base-00: var(--color-alloy-white);
+	--color-base-05: var(--color-alloy-white);
+	--color-base-10: var(--color-alloy-white);
+	--color-base-20: var(--color-alloy-bright);
+	--color-base-25: var(--color-alloy-shine);
+	--color-base-30: var(--color-alloy-shine);
+	--color-base-35: var(--color-alloy);
+	--color-base-40: var(--color-alloy-dimm);
+	--color-base-50: var(--color-alloy-dimm);
+	--color-base-60: var(--color-alloy-shadow);
+	--color-base-70: var(--color-alloy-dark);
+	--color-base-100:var(--color-alloy-black);
+
 	/* LAYOUT */
-	--background-primary: var(--color-paper);
-	--background-secondary: var(--color-paper-shadow);
 
-	--titlebar-background: var(--color-paper-shadow);
-	--titlebar-background-focused: var(--color-paper);
+	--background-primary: var(--color-alloy-white);
+	--background-secondary: var(--color-alloy-bright);
 	
-	--status-bar-background: var(--color-paper);
-	--status-bar-border-color: var(--color-paper-shadow);
+	--ribbon-background: var(--color-alloy-bright);
 
-	--divider-color: var(--color-paper-accent);
+	--titlebar-background: var(--color-alloy-light);
+	--titlebar-background-focused: var(--color-alloy-bright);
+
+	--divider-color: var(--color-alloy-dark);
 
 	/* TEXT */
-	--inline-title-color: var(--color-alloy-iron);
 
-	--metadata-background: var(--color-alloy-iron-shine);
-	--footnote-background: var(--color-alloy-iron-shadow);
-
-	--h1-color: var(--color-alloy-iron);
-	--h2-color: var(--color-alloy-iron);
-	--h3-color: var(--color-alloy-iron-shadow);
-	--h4-color: var(--color-alloy-iron);
-	--h5-color: var(--color-alloy-iron-shadow);
-	--h6-color: var(--color-alloy-iron-shadow);
-
-	/* TAGS */
-	--tag-color: var(--color-alloy-iron);
-	--tag-background: var(--color-alloy-iron-ghost);
-	--tag-border-color: var(--color-alloy-iron-shine);
+	--inline-title-color: var(--color-alloy-black);
 	
+	--metadata-background: var(--color-alloy-dimm);
+	--footnote-background: var(--color-alloy-black);
+	--footnote-border-color: var(--color-alloy-black);
 
-	/* CONTROLS */
-	--checkbox-color: var(--color-alloy-iron);
-	--checkbox-color-hover: var(--color-alloy-iron-shine);	
+	--h1-color: var(--color-alloy-dark);
+	--h2-color: var(--color-alloy-dark);
+	--h3-color: var(--color-alloy-dimm);
+	--h4-color: var(--color-alloy);
+	--h5-color: var(--color-alloy-shine);
+	--h6-color: var(--color-alloy-light);
 
-	--checkbox-border-color: var(--color-alloy-iron-shadow);
-	--checkbox-border-color-hover: var(--color-alloy-iron-shine);
+	
 }

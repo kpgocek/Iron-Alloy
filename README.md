@@ -32,6 +32,17 @@
 
 <br />
 
+<h2>Core Principles</h2>
+<p>Iron Alloy is a legibility-first Obsidian theme designed for focused writing and long-form knowledge work. It emphasizes structural clarity, accessibility, and self-contained reliability over decorative styling.</p>
+<h3>Typography as Foundation</h3>
+<p>The theme embeds Atkinson Hyperlegible Next directly within the CSS. This ensures consistent rendering across platforms, improved character distinction and reading comfort.</p>
+<p>The typographic system prioritizes long writing sessions and reduced visual fatigue.</p>
+<h3>Industrial Minimalism</h3>
+<p>Iron Alloy favors restrained styling and clear hierarchy. The visual language is structured and functional rather than decorative.</p>
+<p>With controlled contrast (in both light and dark mode), clear heading differentiation, neutral backgrounds and purposful accent usage, the theme aims to reduce visual noise while maintaining strong structural definition.</p>
+
+<br />
+
 <h2>Known Limitations</h2>
 <p>Theme tested was on Windows and Android. It can work properly on other operation system but it's not guaranteed.</p>
 
