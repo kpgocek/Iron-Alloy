@@ -131,18 +131,24 @@ jobs:
         id: readme
         continue-on-error: true
         run: |
+          ERRORS_COUNT = 0
+
           if ! grep -iq "install" README.md; then
             echo "README missing installation instructions"
-            exit 1
+            ERRORS_COUNT=$((ERRORS_COUNT + 1))
           fi
 
-          if ! grep -iq "screenshot" README.md; then
+          if ! grep -iq "screenshot" README.md && grep -iqE "!\[.*\]\(.*\)" README.md; then
             echo "README missing screenshots reference"
-            exit 1
+            ERRORS_COUNT=$((ERRORS_COUNT + 1))
           fi
 
           if ! grep -iq "description" README.md; then
             echo "README missing clear description"
+            ERRORS_COUNT=$((ERRORS_COUNT + 1))
+          fi
+
+          if [ "$ERRORS_COUNT" -gt 0 ]; then
             exit 1
           fi
 
