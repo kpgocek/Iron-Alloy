@@ -1,0 +1,24 @@
+const fs = require('fs');
+const semver = require('semver');
+
+const manifest = JSON.parse(fs.readFileSync('../manifest.json', 'utf8'));
+const required = ['name','version','minAppVersion','description','author'];
+
+for (const field of required) {
+  if (!manifest[field]) {
+    console.error(`Missing required field: ${field}`);
+    process.exit(1);
+  }
+}
+
+if (!semver.valid(manifest.version)) {
+  console.error("Version must follow semantic versioning (x.y.z)");
+  process.exit(1);
+}
+
+if (!semver.valid(manifest.minAppVersion)) {
+  console.error("minAppVersion must follow semantic versioning");
+  process.exit(1);
+}
+
+console.log("Manifest validation passed");

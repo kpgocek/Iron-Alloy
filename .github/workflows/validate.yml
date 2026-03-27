@@ -7,8 +7,16 @@ on:
   release:
     types: [published]
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   validate:
+    concurrency:
+      group: validate-${{ github.ref }}
+      cancel-in-progress: true
+
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +29,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: |
-          npm install semver
-          npm install stylelint stylelint-config-standard
+        run: npm ci
 
       ############################################
       # FILE REQUIREMENTS
@@ -31,47 +37,19 @@ jobs:
 
       - name: Check required root files
         run: |
-          test -f theme.css || (echo "theme.css missing" && exit 1)
-          test -f manifest.json || (echo "manifest.json missing" && exit 1)
-          test -f LICENSE || (echo "LICENSE missing" && exit 1)
-          test -f README.md || (echo "README.md missing" && exit 1)
+          set -euo pipefail
+          for file in theme.css manifest.json LICENSE README.md; do
+            [[ -f "$file" ]] || { echo "$file missing"; exit 1; }
+          done
 
       ############################################
       # MANIFEST VALIDATION
       ############################################
-
-      - name: Validate manifest.json syntax
-        run: |
-          node -e "JSON.parse(require('fs').readFileSync('manifest.json','utf8'))"
+      - name: Validate manifest syntax
+        run: npm run validate:manifest:syntax
 
       - name: Validate manifest required fields
-        run: |
-          node <<EOF
-          const fs = require('fs');
-          const semver = require('semver');
-
-          const manifest = JSON.parse(fs.readFileSync('manifest.json','utf8'));
-          const required = ['name','version','minAppVersion','description','author'];
-
-          for (const field of required) {
-            if (!manifest[field]) {
-              console.error(\`Missing required field: \${field}\`);
-              process.exit(1);
-            }
-          }
-
-          if (!semver.valid(manifest.version)) {
-            console.error("Version must follow semantic versioning (x.y.z)");
-            process.exit(1);
-          }
-
-          if (!semver.valid(manifest.minAppVersion)) {
-            console.error("minAppVersion must follow semantic versioning");
-            process.exit(1);
-          }
-
-          console.log("Manifest validation passed");
-          EOF
+        run: npm run validate:manifest
 
       ############################################
       # VERSION CONSISTENCY
@@ -94,24 +72,23 @@ jobs:
       - name: Lint CSS syntax
         run: |
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
-          stylelint theme.css
+          npm run lint:css
 
       - name: Check for forbidden patterns
         run: |
-          if grep -iE "@import.*http" theme.css; then
-            echo "Remote @import detected"
-            exit 1
-          fi
+          set -euo pipefail
+          check() {
+            local pattern="$1"
+            local message="$2"
 
-          if grep -iE "analytics|telemetry|tracking|google-analytics" theme.css; then
-            echo "Tracking code detected"
-            exit 1
-          fi
-
-          if grep -iE "eval\(|base64," theme.css; then
-            echo "Potential obfuscated code detected"
-            exit 1
-          fi
+            if grep -iE "$pattern" theme.css; then
+              echo "$message"
+              exit 1
+            fi
+          }
+          check "@import.*http" "Remote @import detected"
+          check "analytics|telemetry|tracking|google-analytics" "Tracking code detected"
+          check "eval\(|base64," "Potential obfuscated code detected"
 
       - name: Ensure CSS is not minified
         run: |
