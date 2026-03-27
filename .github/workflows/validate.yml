@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install dependencies
         run: npm ci
@@ -46,10 +46,12 @@ jobs:
       # MANIFEST VALIDATION
       ############################################
       - name: Validate manifest syntax
+        id: manifest_syntax
         continue-on-error: true
         run: npm run validate:manifest:syntax
 
       - name: Validate manifest required fields
+        id: manifest_fields
         continue-on-error: true
         run: npm run validate:manifest
 
@@ -58,6 +60,7 @@ jobs:
       ############################################
 
       - name: Validate release tag matches manifest version
+        id: version
         continue-on-error: true
         if: github.event_name == 'release'
         run: |
@@ -73,12 +76,14 @@ jobs:
       # CSS QUALITY CHECKS
       ############################################
       - name: Lint CSS syntax
+        id: css_lint
         continue-on-error: true
         run: |
           echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
           npm run lint:css
 
       - name: Check for forbidden patterns
+        id: css_patterns
         continue-on-error: true
         run: |
           set -euo pipefail
@@ -109,6 +114,7 @@ jobs:
           fi
 
       - name: Ensure CSS is not minified
+        id: css_size
         continue-on-error: true
         run: |
           LINE_COUNT=$(wc -l < theme.css)
@@ -122,6 +128,7 @@ jobs:
       ############################################
 
       - name: Validate README structure
+        id: readme
         continue-on-error: true
         run: |
           if ! grep -iq "install" README.md; then
@@ -144,6 +151,7 @@ jobs:
       ############################################
 
       - name: Validate LICENSE content
+        id: license
         continue-on-error: true
         run: |
           if ! grep -iqE "MIT|GPL|Apache|BSD" LICENSE; then
@@ -152,5 +160,36 @@ jobs:
           fi
 
       - name: Summarize validation results
-        if: failure()
-        run: echo "Validation completed with issues. Please review the logs above for details."
+        if: always()
+        run: |
+          FAILURES=0
+
+          check() {
+            local name="$1"
+            local outcome="$2"
+
+            if [ "$outcome" = "failure" ]; then
+              echo "❌ $name"
+              FAILURES=$((FAILURES + 1))
+            else
+              echo "✅ $name"
+            fi
+          }
+
+          check "Manifest syntax" "${{ steps.manifest_syntax.outcome }}"
+          check "Manifest fields" "${{ steps.manifest_fields.outcome }}"
+          check "Version consistency" "${{ steps.version.outcome }}"
+          check "CSS lint" "${{ steps.css_lint.outcome }}"
+          check "Forbidden patterns" "${{ steps.css_patterns.outcome }}"
+          check "CSS size" "${{ steps.css_size.outcome }}"
+          check "README" "${{ steps.readme.outcome }}"
+          check "LICENSE" "${{ steps.license.outcome }}"
+
+          echo ""
+
+          if [ "$FAILURES" -gt 0 ]; then
+            echo "🚨 Validation failed with $FAILURES issue(s)"
+            exit 1
+          else
+            echo "✅ All validations passed"
+          fi
