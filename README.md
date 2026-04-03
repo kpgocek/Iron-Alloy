@@ -41,27 +41,34 @@
 
 <h3>Manual</h3>
 
-1. Locate vault folder:
-```
-<Vault>/.obsidian/themes/ 
-```
+1. Locate vault's Themes folder:
+<pre>
+&lt;Vault>/.obsidian/themes/
+</pre>
 
 2. Create a folder for your theme:
-```
+<pre>
 .obsidian/themes/ThemeName/
-```
+</pre>
 
 3. Place files inside:
-```
+<pre>
 ThemeName/
 ├── manifest.json
 └── theme.css
-```
+</pre>
 
-4. Restart Obsidian (or reload themes)
-```
-Settings → Appearance → Themes
-```
+4. Select your theme. 
+<pre>Settings → Appearance → Themes</pre>
+
+<em>In case you cannot find your theme - reload themes page or restart Obsidian.</em>
+
+<br/>
+
+<h2>Description</h2>
+<p>Iron Alloy is a dark and light Obsidian theme built around a single monochromatic steel-blue palette: clean, structured, and deliberately restrained. Inspired by industrial minimalism, the theme uses controlled contrast, a clear heading hierarchy, and sharp edges with no decorative clutter, making it equally at home in long writing sessions and dense knowledge work.</p>
+
+<br/>
 
 <h2>Core Principles</h2>
 <p>Iron Alloy is a legibility-first Obsidian theme designed for focused writing and long-form knowledge work. It emphasizes structural clarity, accessibility, and self-contained reliability over decorative styling.</p>
@@ -77,6 +84,7 @@ Settings → Appearance → Themes
 <h2>Known Limitations</h2>
 <p>Theme tested was on Windows and Android. It can work properly on other operation system but it's not guaranteed.</p>
 
+<br/>
 
 <!-- FOOTER -->
 
